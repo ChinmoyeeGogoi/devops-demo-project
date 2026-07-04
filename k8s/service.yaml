@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: covid-app-service
+spec:
+  selector:
+    app: covid-app          # connects to pods with this label
+  ports:
+  - port: 80
+    targetPort: 5000
+  type: NodePort            # exposes on a port on the Minikube node

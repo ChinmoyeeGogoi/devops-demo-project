@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment           # type of K8s object
+metadata:
+  name: covid-app
+spec:
+  replicas: 2              # run 2 copies of the container for redundancy
+  selector:
+    matchLabels:
+      app: covid-app
+  template:
+    metadata:
+      labels:
+        app: covid-app
+    spec:
+      containers:
+      - name: covid-app
+        image: covid-app:latest
+        ports:
+        - containerPort: 5000
+        # Health check — K8s restarts the container if this fails
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 5000
+          initialDelaySeconds: 10
+          periodSeconds: 5
