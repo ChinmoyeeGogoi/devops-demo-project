@@ -1,0 +1,44 @@
+pipeline {
+    agent any   // run on any available Jenkins agent
+
+    stages {
+
+        stage('Checkout') {
+            // Jenkins pulls your latest code from GitHub
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Run Tests') {
+            // Install dependencies and run pytest
+            steps {
+                sh 'pip install -r requirements.txt'
+                sh 'pytest test_app.py -v'
+            }
+        }
+
+        stage('Build Docker Image') {
+            // Builds the Docker image from your Dockerfile
+            steps {
+                sh 'docker build -t covid-app:latest .'
+            }
+        }
+
+        stage('Deploy to Kubernetes') {
+            // Applies your K8s config files to Minikube
+            steps {
+                sh 'kubectl apply -f k8s/'
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'Pipeline succeeded — app deployed!'
+        }
+        failure {
+            echo 'Pipeline failed — check logs above'
+        }
+    }
+}
