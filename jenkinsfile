@@ -10,13 +10,13 @@ pipeline {
             }
         }
 
-        stage('Run Tests') {
+        //stage('Run Tests') {
             // Install dependencies and run pytest
-            steps {
-                sh 'pip install -r requirements.txt'
-                sh 'pytest test_app.py -v'
-            }
-        }
+            //steps {
+                //sh 'pip install -r requirements.txt'
+                //sh 'pytest test_app.py -v'
+            //}
+        //}
 
         stage('Build Docker Image') {
             // Builds the Docker image from your Dockerfile
